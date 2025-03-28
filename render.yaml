@@ -1,0 +1,25 @@
+# render.yaml
+services:
+  # Backend Service (Node.js)
+  - type: web
+    name: backend
+    env: node
+    rootDirectory: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        value: your-database-connection-string
+    
+  # Frontend Service (Static Site)
+  - type: static
+    name: frontend
+    rootDirectory: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+
+# Cache Configuration (Optional but recommended)
+cache:
+  directories:
+    - backend/node_modules
+    - frontend/node_modules

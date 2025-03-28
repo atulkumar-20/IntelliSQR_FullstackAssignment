@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
     "start": "node ./build/index.js",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "render-postbuild": "prisma generate && prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +29,8 @@
     "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }
