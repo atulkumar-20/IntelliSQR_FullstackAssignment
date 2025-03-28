@@ -7,7 +7,7 @@ Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intelli
 ## Tech Stack
 
 ### Frontend
-- React 19
+- React
 - TypeScript
 - Vite
 - TanStack Query (React Query)
@@ -24,13 +24,7 @@ Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intelli
 - Prisma (ORM)
 - MongoDB
 - JWT Authentication
-- Bcrypt
 
-### DevOps & Tools
-- Render (Hosting)
-- Git
-- ESLint
-- Prettier
 
 ## Project Structure
 
@@ -68,7 +62,7 @@ Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intelli
 
 ### Prerequisites
 
-- Node.js 18.16.0 or higher
+- Node.js
 - MongoDB database
 - Git
 
@@ -76,8 +70,8 @@ Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intelli
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://www.github.com/atulkumar-20/IntelliSQR_FullstackAssignment.git
+cd IntelliSQR_FullstackAssignment
 ```
 
 2. **Backend Setup**
@@ -86,7 +80,7 @@ cd backend
 npm install
 
 # Create .env file
-cp .env.example .env
+touch .env
 
 # Update .env with your MongoDB connection string
 # DATABASE_URL="your_mongodb_connection_string"
@@ -105,7 +99,7 @@ cd frontend
 npm install
 
 # Create .env file
-cp .env.example .env
+touch .env
 
 # Update .env with your backend URL
 # VITE_API_URL="http://localhost:7000/api/auth"
@@ -150,6 +144,3 @@ The application is deployed on Render:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
