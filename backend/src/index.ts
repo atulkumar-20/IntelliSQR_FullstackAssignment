@@ -18,9 +18,14 @@ async function testConnection() {
     process.exit(1);
   }
 }
-
+const allowedOrigins = [
+  'https://intellisqr-fullstackassignment-2.onrender.com'
+];
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials:true
+}));
 app.use(express.json());
 
 // Routes
