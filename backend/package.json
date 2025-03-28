@@ -7,7 +7,9 @@
     "build": "tsc --build",
     "start": "node ./build/index.js",
     "dev": "nodemon ./src/index.ts",
-    "render-postbuild": "prisma generate && prisma migrate deploy"
+     "postinstall": "prisma generate",
+    "prisma:push": "prisma db push",
+    "render-build": "npm run build && npm run prisma:generate && npm run prisma:push"
   },
   "keywords": [],
   "author": "",

@@ -20,78 +20,97 @@ const errors_1 = require("../utils/errors");
 const prisma = new client_1.PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 exports.authController = {
-    login(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { email, password } = req.body;
-                if (!email || !password) {
-                    throw new errors_1.ValidationError('Email and password are required');
-                }
-                const user = yield prisma.user.findUnique({
-                    where: { email }
-                });
-                if (!user) {
-                    throw new errors_1.UnauthorizedError('Invalid credentials');
-                }
-                const isValidPassword = yield bcrypt_1.default.compare(password, user.password);
-                if (!isValidPassword) {
-                    throw new errors_1.UnauthorizedError('Invalid credentials');
-                }
-                const token = jsonwebtoken_1.default.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
-                res.json({
-                    token,
-                    user: {
-                        id: user.id,
-                        email: user.email
-                    }
-                });
+    register: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { email, password } = req.body;
+            // Debug log
+            console.log('Registration attempt:', { email, password: '***' });
+            // Validate input
+            if (!email || !password) {
+                throw new errors_1.ValidationError('Email and password are required');
             }
-            catch (error) {
-                next(error);
+            // Normalize email
+            const normalizedEmail = email.toString().toLowerCase().trim();
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(normalizedEmail)) {
+                throw new errors_1.ValidationError('Invalid email format');
             }
-        });
-    },
-    register(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { email, password } = req.body;
-                if (!email || !password) {
-                    throw new errors_1.ValidationError('Email and password are required');
-                }
-                // Validate email format
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    throw new errors_1.ValidationError('Invalid email format');
-                }
-                // Validate password strength
-                if (password.length < 6) {
-                    throw new errors_1.ValidationError('Password must be at least 6 characters long');
-                }
-                const existingUser = yield prisma.user.findUnique({
-                    where: { email }
-                });
-                if (existingUser) {
-                    throw new errors_1.ValidationError('Email already exists');
-                }
-                const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-                const user = yield prisma.user.create({
-                    data: {
-                        email,
-                        password: hashedPassword
-                    }
-                });
-                const token = jsonwebtoken_1.default.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
-                res.status(201).json({
-                    token,
-                    user: {
-                        id: user.id,
-                        email: user.email
-                    }
-                });
+            // Validate password strength
+            if (password.length < 6) {
+                throw new errors_1.ValidationError('Password must be at least 6 characters long');
             }
-            catch (error) {
-                next(error);
+            // Check if user already exists
+            const existingUser = yield prisma.user.findUnique({
+                where: { email: normalizedEmail }
+            });
+            if (existingUser) {
+                throw new errors_1.ValidationError('Email already exists');
             }
-        });
-    }
+            // Hash password
+            const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+            // Create user
+            const newUser = yield prisma.user.create({
+                data: {
+                    email: normalizedEmail,
+                    password: hashedPassword
+                }
+            });
+            // Return success response
+            res.status(201).json({
+                message: 'Account created successfully! Please login.',
+                user: {
+                    id: newUser.id,
+                    email: newUser.email
+                }
+            });
+        }
+        catch (error) {
+            console.error('Registration error:', error);
+            next(error);
+        }
+    }),
+    login: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { email, password } = req.body;
+            // Debug log
+            console.log('Login attempt:', { email, password: '***' });
+            // Validate input
+            if (!email || !password) {
+                throw new errors_1.ValidationError('Email and password are required');
+            }
+            // Normalize email
+            const normalizedEmail = email.toString().toLowerCase().trim();
+            // Find user
+            const user = yield prisma.user.findUnique({
+                where: {
+                    email: normalizedEmail
+                }
+            });
+            // Debug log
+            console.log('User found:', user ? 'yes' : 'no');
+            if (!user) {
+                throw new errors_1.ValidationError('Invalid credentials');
+            }
+            // Check password
+            const isValidPassword = yield bcrypt_1.default.compare(password, user.password);
+            if (!isValidPassword) {
+                throw new errors_1.ValidationError('Invalid credentials');
+            }
+            // Generate token
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
+            // Return response
+            res.json({
+                token,
+                user: {
+                    id: user.id,
+                    email: user.email
+                }
+            });
+        }
+        catch (error) {
+            console.error('Login error:', error);
+            next(error);
+        }
+    })
 };
