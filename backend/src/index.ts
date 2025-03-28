@@ -8,7 +8,12 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 7000;
 
+const allowedOrigins = [
+  'https://intellisqr-fullstackassignment-2.onrender.com',
+  'http://localhost:5173'
+];
 
+// Test database connection
 async function testConnection() {
   try {
     await prisma.$connect();
@@ -18,14 +23,23 @@ async function testConnection() {
     process.exit(1);
   }
 }
-const allowedOrigins = [
-  'https://intellisqr-fullstackassignment-2.onrender.com'
-];
-// Middleware
+
+// CORS configuration
 app.use(cors({
-  origin: allowedOrigins,
-  credentials:true
+  origin: function(origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 
 // Routes
@@ -34,7 +48,7 @@ app.use('/api/auth', authRouter);
 // Error handling middleware
 app.use(errorHandler);
 
-// Start server after testing database connection
+// Start server
 testConnection().then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

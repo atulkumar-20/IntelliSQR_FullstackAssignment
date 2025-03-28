@@ -10,26 +10,30 @@ services:
       npx prisma generate
       npm run build
     startCommand: npm start
-    healthCheckPath: /health
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
         sync: false
+      - key: JWT_SECRET
+        sync: false
       - key: PORT
-        value: 7000 
+        value: 7000
 
   - type: static
     name: frontend
     rootDirectory: frontend
     buildCommand: npm install && npm run build
     publishDir: dist
-    addHeaders:
-      - name: Content-Security-Policy
-        value: "default-src 'self' https: 'unsafe-inline'" 
     envVars:
       - key: VITE_API_URL
-        value: https://intellisqr-fullstackassignment-1.onrender.com
+        value: "https://intellisqr-fullstackassignment-1.onrender.com/api/auth"
+
+databases:
+  - name: mongodb
+    databaseName: Assignment
+    ipAllowList: [] # Allow all IPs
 
 cache:
   directories:
