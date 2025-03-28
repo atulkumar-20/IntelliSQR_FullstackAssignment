@@ -18,8 +18,8 @@ Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intelli
 - Axios
 
 ### Backend
-- Node.js(Typescript)
-- Express.js(Typescript)
+- Node.js (Typescript)
+- Express.js (Typescript)
 - Prisma (ORM)
 - MongoDB
 - JWT Authentication
