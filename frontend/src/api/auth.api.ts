@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LoginCredentials, LoginResponse, RegisterResponse } from '../types/auth';
 
-const API_BASE_URL = 'http://localhost:7000/api/auth'; // Updated port to match backend
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const authApi = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {

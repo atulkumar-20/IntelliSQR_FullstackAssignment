@@ -8,7 +8,7 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 7000;
 
-// Test database connection
+
 async function testConnection() {
   try {
     await prisma.$connect();

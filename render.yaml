@@ -29,7 +29,7 @@ services:
         value: "default-src 'self' https: 'unsafe-inline'" 
     envVars:
       - key: VITE_API_URL
-        value: https://your-backend-service.onrender.com  # REPLACE WITH ACTUAL URL
+        value: https://intellisqr-fullstackassignment-1.onrender.com
 
 cache:
   directories:
