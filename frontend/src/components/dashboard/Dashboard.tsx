@@ -12,10 +12,10 @@ export const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto h-full">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
-            Welcome {user?.email}!
+            Welcome {user?.email.split('@')[0]}
           </h1>
           <button
             onClick={handleLogout}
@@ -24,7 +24,11 @@ export const Dashboard = () => {
             Logout
           </button>
         </div>
-        {/* Add your dashboard content here */}
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+          <h1 className="text-2xl font-bold text-gray-900">
+            This is your Dashboard
+          </h1>
+        </div>
       </div>
     </div>
   );
