@@ -2,7 +2,7 @@
 
 A modern full-stack authentication system built with React, TypeScript, Node.js, and MongoDB. Features include user registration, login, and protected dashboard access.
 
-Live Demo: [https://intellisqr-fullstackassignment.onrender.com](https://intellisqr-fullstackassignment.onrender.com)
+Live Demo: Working on it
 
 ## Tech Stack
 
